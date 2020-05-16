@@ -1,19 +1,19 @@
 /*Sample implimentation of rate limiter dynamically changing its decision to accept or deny request
-with actual load on the system*/
+with actual load on the system.This code is not compiled yet. Just wrote an outline implementation.*/
 public class RateLimiter {
     int maxRequests=1000;
-    int maxLoad=100;
+    float maxCapacityPercent=1;
     Long time_limit=1000L;
     Map<String,Queue<Long>> mapOfClientIds=null;
     public RateLimiter(int maxRequests,int maxLoad,long time_limit){
       this.maxRequests=maxRequests;
-      this.maxLoad=maxLoad;
+      this.maxCapacityPercent=maxCapacityPercent;
       this.time_limit=time_limit;
       mapOfClientIds=new HashMap<String,Queue<Long>>();
     }
     
     public boolean canAllow(String clientId,int currentLoadAsPercentage){
-        int currentCapacity=1-currentLoadAsPercentage;
+        float currentCapacity=1-currentLoadAsPercentage;
         if (!mapOfClientIds.containsKey(clientId)){
             Queue<Long> queue=new Dequeue<Long>();
             if (1>maxRequests*((currentCapacity*1.0)/maxLoad))){
@@ -27,7 +27,7 @@ public class RateLimiter {
             if (!queue.isEmpty() && System.currentTimeMillis()-queue.peek()>=time_limit){
                 queue.poll();
             }
-            if (queue.size()+1>maxRequests*((currentCapacity*1.0)/maxLoad))){
+            if (queue.size()+1>maxRequests*((currentCapacity*1.0)/maxCapacityPercent))){
                 return false;
             }
             queue.offer(System.currentTimeMillis());
