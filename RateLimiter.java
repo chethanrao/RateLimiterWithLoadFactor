@@ -5,7 +5,7 @@ public class RateLimiter {
     float maxCapacityPercent=1;
     Long time_limit=1000L;
     Map<String,Queue<Long>> mapOfClientIds=null;
-    public RateLimiter(int maxRequests,int maxLoad,long time_limit){
+    public RateLimiter(int maxRequests,int maxCapacityPercent,long time_limit){
       this.maxRequests=maxRequests;
       this.maxCapacityPercent=maxCapacityPercent;
       this.time_limit=time_limit;
@@ -16,7 +16,7 @@ public class RateLimiter {
         float currentCapacity=1-currentLoadAsPercentage;
         if (!mapOfClientIds.containsKey(clientId)){
             Queue<Long> queue=new Dequeue<Long>();
-            if (1>maxRequests*((currentCapacity*1.0)/maxLoad))){
+            if (1>maxRequests*((currentCapacity*1.0)/maxCapacityPercent))){
                 return false;
             }
             queue.offer(System.currentTimeMillis());
