@@ -14,23 +14,25 @@ public class RateLimiter {
     
     public boolean canAllow(String clientId,int currentLoadAsPercentage){
         float currentCapacity=1-currentLoadAsPercentage;
+        long currentMillis=System.currentTimeMillis();
+
         if (!mapOfClientIds.containsKey(clientId)){
             Queue<Long> queue=new Dequeue<Long>();
             if (1>maxRequests*((currentCapacity*1.0)/maxCapacityPercent))){
                 return false;
             }
-            queue.offer(System.currentTimeMillis());
+            queue.offer(currentMillis);
             mapOfClientIds.put(clientId,queue);
         }
         else {
             Queue<Long> queue=mapOfClientIds.get(clientId);
-            while (!queue.isEmpty() && System.currentTimeMillis()-queue.peek()>=time_limit){
+            while (!queue.isEmpty() && currentMillis-queue.peek()>=time_limit){
                 queue.poll();
             }
             if (queue.size()+1>maxRequests*((currentCapacity*1.0)/maxCapacityPercent))){
                 return false;
             }
-            queue.offer(System.currentTimeMillis());
+            queue.offer(currentMillis);
         }
         return true;    
     }
