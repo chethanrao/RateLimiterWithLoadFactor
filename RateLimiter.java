@@ -1,5 +1,6 @@
 /*Sample implimentation of rate limiter dynamically changing its decision to accept or deny request
-with actual load on the system.This code is not compiled yet. Just wrote an outline implementation.*/
+with actual load on the system.This code is not compiled yet. Just wrote an outline implementation.
+*/
 public class RateLimiter {
     int maxRequests=1000;
     float maxCapacityPercent=1;
