@@ -24,7 +24,7 @@ public class RateLimiter {
         }
         else {
             Queue<Long> queue=mapOfClientIds.get(clientId);
-            if (!queue.isEmpty() && System.currentTimeMillis()-queue.peek()>=time_limit){
+            while (!queue.isEmpty() && System.currentTimeMillis()-queue.peek()>=time_limit){
                 queue.poll();
             }
             if (queue.size()+1>maxRequests*((currentCapacity*1.0)/maxCapacityPercent))){
