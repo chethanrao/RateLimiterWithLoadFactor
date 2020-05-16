@@ -16,7 +16,7 @@ public class RateLimiter {
         int currentCapacity=1-currentLoadAsPercentage;
         if (!mapOfClientIds.containsKey(clientId)){
             Queue<Long> queue=new Dequeue<Long>();
-            if (1>maxRequests*((currentCapacity*1.0)/maxLoad)){
+            if (1>maxRequests*((currentCapacity*1.0)/maxLoad))){
                 return false;
             }
             queue.offer(System.currentTimeMillis());
@@ -27,7 +27,7 @@ public class RateLimiter {
             if (!queue.isEmpty() && System.currentTimeMillis()-queue.peek()>=time_limit){
                 queue.poll();
             }
-            if (queue.size()+1>maxRequests*((currentCapacity*1.0)/maxLoad)){
+            if (queue.size()+1>maxRequests*((currentCapacity*1.0)/maxLoad))){
                 return false;
             }
             queue.offer(System.currentTimeMillis());
